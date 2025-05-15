@@ -59,7 +59,6 @@ cd AI-Resume-Scanner
 pip install -r requirements.txt
 playwright install --with-deps
 ```
-
 3. Add your resume and job description (in `data/`)
 
 4. Run the script:
@@ -89,10 +88,16 @@ aws, scalable, cloud, communication, nlp, deployment
 
 ```bash
 cd ai-job-analyzer-tf
+streamlit run app.py --server.port 8501 --server.address 0.0.0.0
 ```
-2.	# Provision AWS Infrastructure
+ # Streamlit UI lauching after Deployment 
+ ```bash
+ http://<your-ec2-public-ip>:8501
+ ```
+2.	# Terraform AWS Implementation
 
 ```bash
+Create main.tf file with terraform code
 terraform init
 terraform plan
 terraform apply
@@ -100,7 +105,8 @@ terraform apply
 3. # Access via Load Balancer DNS
 
 ```bash
-Example: http://<alb-dns>.amazonaws.com
+Update the main.tf file with load balancer code along with terraform code
+Example usage: http://<alb-dns>.amazonaws.com
 ```
 
 4. # What’s Deployed
