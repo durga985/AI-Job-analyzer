@@ -105,26 +105,26 @@ Example: http://<alb-dns>.amazonaws.com
 
 4. # What’s Deployed
 
- # - EC2 instance with Streamlit App.
+ - EC2 instance with Streamlit App.
 
-# - Security Groups for HTTP/8501 via Load Balancer.
+ - Security Groups for HTTP/8501 via Load Balancer.
  
-# - Load Balancer routing traffic to EC2.
+ - Load Balancer routing traffic to EC2.
 
-# - Scalable Infrastructure as Code (IaC).
+ - Scalable Infrastructure as Code (IaC).
 
 
 # ✅ Project Highlights
 
-# AI-Powered Resume Scoring
+ - AI-Powered Resume Scoring
 
-# Real-time Job Scraping from LinkedIn
+ - Real-time Job Scraping from LinkedIn
 
-# Cloud-Native, Scalable Architecture
+ - Cloud-Native, Scalable Architecture
 
-# Infrastructure as Code with Terraform
+ - Infrastructure as Code with Terraform
 
-# Interactive Web UI with Streamlit
+ - Interactive Web UI with Streamlit
 
 ## 🚀 Future Extensions
 
