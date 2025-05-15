@@ -100,7 +100,7 @@ if resume_file and (job_file or job_link):
             st.success("No major keywords missing. Your resume looks great!")
 
         # Display LinkedIn Job Suggestions
-        st.markdown("### 🧑‍💼 **LinkedIn Job Listings**")
+        st.markdown("### 🧑‍💼 **Related LinkedIn Job Listings**")
         search_query = " ".join(missing_keywords[:5]) or "Data Scientist"
         jobs = fetch_linkedin_jobs(search_query)
         if jobs:
