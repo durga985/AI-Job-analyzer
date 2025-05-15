@@ -70,10 +70,10 @@ streamlit run app.py
 
 ## 🧠 AI & NLP Details
 
-# •	Model: Sentence-BERT (all-MiniLM-L6-v2)
-# •	Similarity: Cosine Similarity on Embeddings
-# •	Keyword Extraction: Basic Regex + NLP Tokenization
-# •	Job Scraping: LinkedIn (via Playwright + BeautifulSoup)
+•	Model: Sentence-BERT (all-MiniLM-L6-v2)
+•	Similarity: Cosine Similarity on Embeddings
+•	Keyword Extraction: Basic Regex + NLP Tokenization
+•	Job Scraping: LinkedIn (via Playwright + BeautifulSoup)
 
 
 ### Example Output:
@@ -135,7 +135,7 @@ Example: http://<alb-dns>.amazonaws.com
 
 ## 👩‍💻 Built By
 
-Durga Phani Teja Pasupuleti
-Sathwik Nellikoppa Basavaraja
-Karthik Maganahalli Prakash
+ - Durga Phani Teja Pasupuleti
+ - Sathwik Nellikoppa Basavaraja
+ - Karthik Maganahalli Prakash
 ---
