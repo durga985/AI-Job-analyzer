@@ -1,0 +1,123 @@
+Load Balancer Code
+--------------------------
+# Existing EC2 and Security Group (keep unchanged)
+provider "aws" {
+  region = "us-east-2"
+}
+
+# ... your existing aws_instance and aws_security_group blocks here ...
+
+# ADD BELOW THIS LINE
+resource "aws_instance" "ai_job_analyzer" {
+  ami           = "ami-04f167a56786e4b09" # Replace with Ubuntu 24.04 AMI for your region
+  instance_type = "t2.micro"
+  key_name      = "my-terraform-key" # Replace with your EC2 Key Pair
+
+  security_groups = [aws_security_group.allow_ssh_streamlit.name]
+
+  user_data = <<-EOF
+              #!/bin/bash
+              sudo apt update -y
+              sudo apt install python3-pip -y
+              sudo apt install git -y
+              git clone https://github.com/durga985/AI-Job-analyzer.git
+              cd AI-Job-analyzer
+              pip3 install -r requirements.txt
+              playwright install --with-deps
+              nohup streamlit run app.py --server.port 8501 --server.address 0.0.0.0 &
+              EOF
+
+  tags = {
+    Name = "AI Job Analyzer"
+  }
+}
+
+resource "aws_security_group" "allow_ssh_streamlit" {
+  name        = "allow_ssh_streamlit"
+  description = "Allow SSH and Streamlit"
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 8501
+    to_port     = 8501
+    protocol        = "tcp"
+    security_groups = [aws_security_group.alb_sg.id]  
+}
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+# ALB Security Group
+resource "aws_security_group" "alb_sg" {
+  name        = "alb_sg"
+  description = "Allow HTTP traffic"
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+# ALB
+resource "aws_lb" "app_lb" {
+  name               = "app-load-balancer"
+  internal           = false
+  load_balancer_type = "application"
+  security_groups    = [aws_security_group.alb_sg.id]
+  subnets            = ["subnet-093c63f5b8ccea00d", "subnet-04c16faf7c4f9a2fb"]  # Replace with your subnet IDs
+}
+
+# Target Group
+resource "aws_lb_target_group" "app_tg" {
+  name     = "app-target-group"
+  port     = 8501
+  protocol = "HTTP"
+  vpc_id   = "vpc-0369a2b5e274a3cac"  # Replace with your VPC ID  
+
+  health_check {
+    path                = "/healthz"
+    interval            = 30
+    timeout             = 5
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+  }
+}
+
+# ALB Listener
+resource "aws_lb_listener" "app_listener" {
+  load_balancer_arn = aws_lb.app_lb.arn
+  port              = 80
+  protocol          = "HTTP"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.app_tg.arn
+  }
+}
+
+# Register EC2 as Target
+resource "aws_lb_target_group_attachment" "app_attachment" {
+  target_group_arn = aws_lb_target_group.app_tg.arn
+  target_id        = aws_instance.ai_job_analyzer.id
+  port             = 8501
+}
