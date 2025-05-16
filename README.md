@@ -135,7 +135,7 @@ Example usage: http://<alb-dns>.amazonaws.com
 ## 🚀 Future Extensions
 
 - Enhanced Job Scraper
-- API-as-a-Service
+- API Implementation for Job Listings
 - Containerization and Orchestration
 - Multi-Job Role Matching
 
