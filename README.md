@@ -59,7 +59,7 @@ cd AI-Resume-Scanner
 pip install -r requirements.txt
 playwright install --with-deps
 ```
-3. Add your resume and job description (in `data/`)
+3. Input your resume and job link or job description file
 
 4. Run the script:
 ```bash
